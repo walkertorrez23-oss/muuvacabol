@@ -206,6 +206,32 @@ export type Database = {
           },
         ]
       }
+      profile_private: {
+        Row: {
+          phone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          phone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          phone?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profile_private_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
@@ -290,6 +316,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      booking_contact_phone: { Args: { _booking: string }; Returns: string }
       listing_booked_ranges: {
         Args: { _listing: string }
         Returns: {

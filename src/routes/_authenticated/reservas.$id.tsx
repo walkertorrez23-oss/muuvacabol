@@ -42,13 +42,14 @@ function Reserva() {
   const q = useQuery({
     queryKey: ["booking", id],
     queryFn: async () => {
-      const [b, h, r] = await Promise.all([
-        supabase.from("bookings").select("*, listing:listings(id, title), renter:profiles!bookings_renter_id_fkey(id, display_name, phone), owner:profiles!bookings_owner_id_fkey(id, display_name, phone)").eq("id", id).maybeSingle(),
+      const [b, h, r, ph] = await Promise.all([
+        supabase.from("bookings").select("*, listing:listings(id, title), renter:profiles!bookings_renter_id_fkey(id, display_name), owner:profiles!bookings_owner_id_fkey(id, display_name)").eq("id", id).maybeSingle(),
         supabase.from("handover_records").select("*").eq("booking_id", id),
         supabase.from("reviews").select("*").eq("booking_id", id),
+        supabase.rpc("booking_contact_phone", { _booking: id }),
       ]);
       if (b.error || !b.data) throw new Error("not found");
-      return { b: b.data, records: h.data ?? [], reviews: r.data ?? [] };
+      return { b: b.data, records: h.data ?? [], reviews: r.data ?? [], phone: (ph.data as string | null) ?? null };
     },
   });
   const refresh = () => qc.invalidateQueries({ queryKey: ["booking", id] });
@@ -56,7 +57,7 @@ function Reserva() {
 
   if (q.isLoading) return <Loading />;
   if (!q.data) return <div className="mx-auto max-w-3xl p-6"><ErrorBox message="Reserva no encontrada." /></div>;
-  const { b, records, reviews } = q.data;
+  const { b, records, reviews, phone } = q.data;
   const isOwner = b.owner_id === user.id;
   const other = isOwner ? b.renter : b.owner;
   const entrega = records.find((r) => r.kind === "entrega");
@@ -97,7 +98,7 @@ function Reserva() {
           {isOwner && <><dt className="text-muted-foreground">Comisión Muuvaca (5%)</dt><dd className="text-right text-muted-foreground">−{fmtXLM(Number(b.commission_amount))}</dd>
           <dt className="text-muted-foreground">Recibes</dt><dd className="text-right text-muted-foreground">{fmtXLM(Number(b.rental_amount) - Number(b.commission_amount))}</dd></>}
         </dl>
-        {step >= 1 && other?.phone && <p className="mt-3 text-muted-foreground">Contacto: {other.phone}</p>}
+        {phone && <p className="mt-3 text-muted-foreground">Contacto: {phone}</p>}
       </section>
 
       {b.status === "solicitada" && (isOwner ? (
