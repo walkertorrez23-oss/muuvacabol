@@ -28,3 +28,8 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Muuvaca architecture
+- Booking amounts, commission and status transitions are enforced by DB triggers (bookings_before_insert/update); `src/lib/pricing.ts` mirrors them for UI quotes only — change both together.
+- Stellar payments are verified server-side against Horizon in `src/lib/stellar.functions.ts`; only that function (service role) may set a booking to `pagada`.
+- Photos live in the private `photos` bucket under `<userId>/...` and are shown via signed URLs (`usePhotoUrls`), because public buckets are blocked in this workspace.

@@ -27,3 +27,8 @@ npm run dev
 - TypeScript
 - React
 - Tailwind CSS
+
+## Muuvaca — publicar y GitHub
+- Enlace público: botón **Publish** en Lovable.
+- GitHub: en Lovable, Conectores → GitHub → conectar; el código se sincroniza solo.
+- Vercel: el proyecto está construido para servidores tipo edge (Cloudflare). Desplegar en Vercel requiere cambiar el preset de servidor de TanStack Start y configurar las variables `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SERVICE_ROLE_KEY` y las `VITE_SUPABASE_*`. Se recomienda el enlace de Lovable.
