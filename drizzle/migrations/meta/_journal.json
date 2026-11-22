@@ -22,6 +22,13 @@
       "when": 1795360331450,
       "tag": "0002_private_profile_phone",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1795360516200,
+      "tag": "0003_restrict_reviews_and_photos_read",
+      "breakpoints": true
     }
   ]
 }

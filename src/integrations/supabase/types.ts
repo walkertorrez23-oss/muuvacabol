@@ -317,6 +317,7 @@ export type Database = {
     }
     Functions: {
       booking_contact_phone: { Args: { _booking: string }; Returns: string }
+      is_booking_party: { Args: { _booking: string }; Returns: boolean }
       listing_booked_ranges: {
         Args: { _listing: string }
         Returns: {
@@ -324,6 +325,7 @@ export type Database = {
           start_date: string
         }[]
       }
+      review_is_published: { Args: { _booking: string }; Returns: boolean }
       user_stats: {
         Args: { _user: string }
         Returns: {
