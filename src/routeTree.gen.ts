@@ -10,33 +10,146 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as ExplorarRouteImport } from './routes/explorar'
+import { Route as AuthenticatedCuentaRouteImport } from './routes/_authenticated/cuenta'
+import { Route as AuthenticatedPublicarRouteImport } from './routes/_authenticated/publicar'
+import { Route as PerfilIdRouteImport } from './routes/perfil.$id'
+import { Route as PublicacionIdRouteImport } from './routes/publicacion.$id'
+import { Route as AuthenticatedReservasIndexRouteImport } from './routes/_authenticated/reservas.index'
+import { Route as AuthenticatedReservasIdRouteImport } from './routes/_authenticated/reservas.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExplorarRoute = ExplorarRouteImport.update({
+  id: '/explorar',
+  path: '/explorar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedCuentaRoute = AuthenticatedCuentaRouteImport.update({
+  id: '/cuenta',
+  path: '/cuenta',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedPublicarRoute = AuthenticatedPublicarRouteImport.update({
+  id: '/publicar',
+  path: '/publicar',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const PerfilIdRoute = PerfilIdRouteImport.update({
+  id: '/perfil/$id',
+  path: '/perfil/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PublicacionIdRoute = PublicacionIdRouteImport.update({
+  id: '/publicacion/$id',
+  path: '/publicacion/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedReservasIndexRoute =
+  AuthenticatedReservasIndexRouteImport.update({
+    id: '/reservas/',
+    path: '/reservas/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedReservasIdRoute = AuthenticatedReservasIdRouteImport.update({
+  id: '/reservas/$id',
+  path: '/reservas/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/explorar': typeof ExplorarRoute
+  '/cuenta': typeof AuthenticatedCuentaRoute
+  '/publicar': typeof AuthenticatedPublicarRoute
+  '/perfil/$id': typeof PerfilIdRoute
+  '/publicacion/$id': typeof PublicacionIdRoute
+  '/reservas/$id': typeof AuthenticatedReservasIdRoute
+  '/reservas/': typeof AuthenticatedReservasIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/explorar': typeof ExplorarRoute
+  '/cuenta': typeof AuthenticatedCuentaRoute
+  '/publicar': typeof AuthenticatedPublicarRoute
+  '/perfil/$id': typeof PerfilIdRoute
+  '/publicacion/$id': typeof PublicacionIdRoute
+  '/reservas/$id': typeof AuthenticatedReservasIdRoute
+  '/reservas': typeof AuthenticatedReservasIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/explorar': typeof ExplorarRoute
+  '/_authenticated/cuenta': typeof AuthenticatedCuentaRoute
+  '/_authenticated/publicar': typeof AuthenticatedPublicarRoute
+  '/perfil/$id': typeof PerfilIdRoute
+  '/publicacion/$id': typeof PublicacionIdRoute
+  '/_authenticated/reservas/$id': typeof AuthenticatedReservasIdRoute
+  '/_authenticated/reservas/': typeof AuthenticatedReservasIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/explorar'
+    | '/cuenta'
+    | '/publicar'
+    | '/perfil/$id'
+    | '/publicacion/$id'
+    | '/reservas/$id'
+    | '/reservas/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/explorar'
+    | '/cuenta'
+    | '/publicar'
+    | '/perfil/$id'
+    | '/publicacion/$id'
+    | '/reservas/$id'
+    | '/reservas'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/explorar'
+    | '/_authenticated/cuenta'
+    | '/_authenticated/publicar'
+    | '/perfil/$id'
+    | '/publicacion/$id'
+    | '/_authenticated/reservas/$id'
+    | '/_authenticated/reservas/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  ExplorarRoute: typeof ExplorarRoute
+  PerfilIdRoute: typeof PerfilIdRoute
+  PublicacionIdRoute: typeof PublicacionIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +161,96 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/explorar': {
+      id: '/explorar'
+      path: '/explorar'
+      fullPath: '/explorar'
+      preLoaderRoute: typeof ExplorarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/cuenta': {
+      id: '/_authenticated/cuenta'
+      path: '/cuenta'
+      fullPath: '/cuenta'
+      preLoaderRoute: typeof AuthenticatedCuentaRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/publicar': {
+      id: '/_authenticated/publicar'
+      path: '/publicar'
+      fullPath: '/publicar'
+      preLoaderRoute: typeof AuthenticatedPublicarRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/perfil/$id': {
+      id: '/perfil/$id'
+      path: '/perfil/$id'
+      fullPath: '/perfil/$id'
+      preLoaderRoute: typeof PerfilIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/publicacion/$id': {
+      id: '/publicacion/$id'
+      path: '/publicacion/$id'
+      fullPath: '/publicacion/$id'
+      preLoaderRoute: typeof PublicacionIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/reservas/': {
+      id: '/_authenticated/reservas/'
+      path: '/reservas'
+      fullPath: '/reservas/'
+      preLoaderRoute: typeof AuthenticatedReservasIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/reservas/$id': {
+      id: '/_authenticated/reservas/$id'
+      path: '/reservas/$id'
+      fullPath: '/reservas/$id'
+      preLoaderRoute: typeof AuthenticatedReservasIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedCuentaRoute: typeof AuthenticatedCuentaRoute
+  AuthenticatedPublicarRoute: typeof AuthenticatedPublicarRoute
+  AuthenticatedReservasIdRoute: typeof AuthenticatedReservasIdRoute
+  AuthenticatedReservasIndexRoute: typeof AuthenticatedReservasIndexRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedCuentaRoute: AuthenticatedCuentaRoute,
+  AuthenticatedPublicarRoute: AuthenticatedPublicarRoute,
+  AuthenticatedReservasIdRoute: AuthenticatedReservasIdRoute,
+  AuthenticatedReservasIndexRoute: AuthenticatedReservasIndexRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
+  ExplorarRoute: ExplorarRoute,
+  PerfilIdRoute: PerfilIdRoute,
+  PublicacionIdRoute: PublicacionIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

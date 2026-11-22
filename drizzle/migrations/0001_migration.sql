@@ -1,0 +1,3 @@
+create policy "photos read" on storage.objects for select using (bucket_id = 'photos');
+create policy "photos upload own folder" on storage.objects for insert to authenticated with check (bucket_id = 'photos' and (storage.foldername(name))[1] = auth.uid()::text);
+create policy "photos delete own" on storage.objects for delete to authenticated using (bucket_id = 'photos' and (storage.foldername(name))[1] = auth.uid()::text);
